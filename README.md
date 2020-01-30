@@ -149,8 +149,8 @@
 ## 자료 저장
 https://github.com/deveb/ML-Study
 
-## 사용할 IDE
-미정
+## 사용할 IDE (예제 코드 구현)
+Jupyter notebook or Colab
 
 ## 관련 강의
 - http://hunkim.github.io/ml/
