@@ -1,0 +1,12 @@
+FROM python:3
+
+ENV PYTHONUNBUFFERED 0
+
+RUN apt-get update && apt-get -y install libpq-dev
+# libpq-dev for postgres
+
+
+WORKDIR /pipeline-sample/app
+
+ADD    /app/requirements.txt    /pipeline-sample/app
+RUN    pip install -r requirements.txt
