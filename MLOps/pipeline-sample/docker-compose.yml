@@ -1,0 +1,45 @@
+version: '3'
+
+volumes:
+  pipeline-sample: {}
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - pipeline-sample:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=pipeline-sample
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: "pg_isready -h localhost -p 5432 -q -U postgres"
+      interval: 3s
+      timeout: 1s
+      retries: 10
+  app:
+    build:
+      context: .
+      dockerfile: ./app/Dockerfile-dev
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=pipeline-sample
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+    ports:
+      - "80:5000"
+    depends_on:
+      - db
+    command:
+      - bash
+      - -c
+      - |
+        python command.py init-db
+        python -m flask run --host=0.0.0.0
+    restart: always
+    volumes:
+      - ./:/pipeline-sample/
