@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-application-docker-deployment
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: python-application-docker
+          image: ebhwang/python-application:latest
+          ports:
+          - containerPort: 5000
+          env:
+            - name: DB_HOST
+              value: "db"
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: pipeline-sample
+            - name: DB_USERNAME
+              value: postgres
+            - name: DB_PASSWORD
+              value: postgres
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "200m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"

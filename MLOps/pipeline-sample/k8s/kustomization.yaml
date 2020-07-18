@@ -1,0 +1,8 @@
+namespace: pipeline-sample
+commonLabels:
+  app: pipeline-sample
+resources:
+  - postgres-deployment.yaml
+  - application-deployment.yaml
+  - postgres-service.yaml
+  - application-service.yaml

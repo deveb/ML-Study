@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-docker-deployment
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: postgres-docker
+          image: postgres:latest
+          ports:
+          - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: pipeline-sample
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_INITDB_ARGS
+              value: --encoding=UTF-8 
+          volumeMounts:
+            - mountPath: "/var/lib/postgresql/data"
+              name: "pipeline-sample"
+      volumes:
+        - hostPath:
+            path: "/home/docker/postgresql/data"
+          name: pipeline-sample
